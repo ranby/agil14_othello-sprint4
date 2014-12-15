@@ -15,6 +15,11 @@ public class ScoreItem {
 		this.score = score;
 	}
 
+	public ScoreItem(ScoreItem orgScore) {
+		this.playerId = orgScore.getPlayerId();
+		this.score = orgScore.getScore();
+	}
+
 	/**
 	 * @return the playerId
 	 */

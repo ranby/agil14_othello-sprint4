@@ -46,7 +46,6 @@ public class OthelloGame implements Othello {
 		this.rules = rules;
 		this.scoreKeeper = scoreKeeper;
 		this.undo = undo;
-
 		moveObservers = new ArrayList<>();
 		gameFinishedObservers = new ArrayList<>();
 
@@ -151,7 +150,7 @@ public class OthelloGame implements Othello {
 		Node originalNode = board.getNode(nodeId);
 		nodesToSwap.add(originalNode);
 
-		undo.addHistory(turnManager.getCurrentPlayer(), nodesToSwap);
+		undo.addHistory(turnManager.getCurrentPlayer(), nodesToSwap, scoreKeeper.getPlayersScore());
 
 		for (Node node : nodesToSwap) {
 			OthelloNode othelloNode = (OthelloNode) node;
@@ -166,6 +165,7 @@ public class OthelloGame implements Othello {
 			o.update(null, nodesToSwap);
 		}
 
+		scoreKeeper.toPrint();
 		return nodesToSwap;
 	}
 
@@ -174,18 +174,23 @@ public class OthelloGame implements Othello {
 		int index = new Random().nextInt(players.size());
 		Player player = players.get(index);
 		turnManager = new TurnManager(rules, players, player);
+		turnManager.addObserver(scoreKeeper.getScoreObserver());
 	}
 
 	@Override
 	public void start(String playerId) {
 		Player player = players.stream().filter(p -> p.getId().equals(playerId)).findFirst().get();
 		turnManager = new TurnManager(rules, players, player);
+		turnManager.addObserver(scoreKeeper.getScoreObserver());
 	}
 
 	@Override
 	public void undo() {
-		Player currentPlayer = undo.undo();
+		Player currentPlayer = undo.undo(scoreKeeper);
 		turnManager = new TurnManager(rules, players, currentPlayer);
+		turnManager.addObserver(scoreKeeper.getScoreObserver());
+		scoreKeeper.toPrint();
+
 	}
 
 	private void observeBoard() {
