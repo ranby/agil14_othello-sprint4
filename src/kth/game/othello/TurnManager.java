@@ -1,5 +1,6 @@
 package kth.game.othello;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -36,6 +37,8 @@ public class TurnManager extends Observable {
 	 */
 	public Player nextPlayer() {
 		int lastPlayer = currentPlayer;
+		ArrayList<String> skippedPlayers = new ArrayList<String>();
+
 		while (true) {
 			currentPlayer = (currentPlayer + 1) % players.size();
 			String currentPlayerId = players.get(currentPlayer).getId();
@@ -43,13 +46,18 @@ public class TurnManager extends Observable {
 				break;
 			} else if (currentPlayer == lastPlayer) {
 				currentPlayer = -1;
-				break;
+				return null;
 			} else {
-				setChanged();
-				notifyObservers(currentPlayerId);
+				skippedPlayers.add(currentPlayerId);
 			}
 		}
+		if (skippedPlayers.size() > 0) {
+			for (String id : skippedPlayers) {
+				setChanged();
+				notifyObservers(id);
+			}
 
+		}
 		return getCurrentPlayer();
 	}
 }
