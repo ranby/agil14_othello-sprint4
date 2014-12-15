@@ -11,6 +11,7 @@ import java.util.Observer;
 
 import kth.game.othello.TurnManager;
 import kth.game.othello.board.Node;
+import kth.game.othello.board.OthelloNode;
 
 /**
  * Keeps track of the current score of a board per player.
@@ -20,7 +21,7 @@ public class ScoreKeeper extends Observable implements Score {
 
 	private Observer scoreObserver = (o, arg) -> {
 		if (Node.class.isInstance(o)) {
-			Node node = (Node) o;
+			OthelloNode node = (OthelloNode) o;
 			String previousPlayer = (String) arg;
 
 			updateScore(node, previousPlayer);
@@ -44,15 +45,15 @@ public class ScoreKeeper extends Observable implements Score {
 		}
 	}
 
-	private void updateScore(Node node, String previousPlayer) {
+	private void updateScore(OthelloNode node, String previousPlayer) {
 		String currentPlayer = node.getOccupantPlayerId();
 		List<String> modified = new ArrayList<>();
 		if (currentPlayer != null) {
-			changeScore(currentPlayer, 1);
+			changeScore(currentPlayer, 1 * node.getValue());
 			modified.add(currentPlayer);
 		}
 		if (previousPlayer != null) {
-			changeScore(previousPlayer, -1);
+			changeScore(previousPlayer, -1 * node.getValue());
 			modified.add(previousPlayer);
 		}
 
