@@ -1,6 +1,5 @@
 package kth.game.othello;
 
-import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,6 +52,10 @@ public class UndoerTest {
 	}
 
 	private List<Node> copyNodes(List<Node> nodes) {
-		return nodes.stream().map(OthelloNode::new).collect(toList());
+		List<Node> newNodes = new ArrayList<Node>();
+		for (Node node : nodes) {
+			newNodes.add(new OthelloNode((OthelloNode) node));
+		}
+		return newNodes;
 	}
 }
