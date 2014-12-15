@@ -165,7 +165,6 @@ public class OthelloGame implements Othello {
 			o.update(null, nodesToSwap);
 		}
 
-		scoreKeeper.toPrint();
 		return nodesToSwap;
 	}
 
@@ -189,7 +188,6 @@ public class OthelloGame implements Othello {
 		Player currentPlayer = undo.undo(scoreKeeper);
 		turnManager = new TurnManager(rules, players, currentPlayer);
 		turnManager.addObserver(scoreKeeper.getScoreObserver());
-		scoreKeeper.toPrint();
 
 	}
 

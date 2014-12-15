@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Observer;
 
 import kth.game.othello.board.OthelloBoard;
 import kth.game.othello.player.Player;
@@ -26,6 +27,7 @@ public class OthelloGameTest {
 		Undoer undo = mock(Undoer.class);
 		when(rules.hasValidMove(anyString())).thenReturn(false);
 		OthelloGame othello = new OthelloGame(players, board, rules, scoreKeeper, undo);
+		when(scoreKeeper.getScoreObserver()).thenReturn(mock(Observer.class));
 
 		othello.start();
 
@@ -41,6 +43,7 @@ public class OthelloGameTest {
 		Undoer undo = mock(Undoer.class);
 		when(rules.hasValidMove(anyString())).thenReturn(true);
 		OthelloGame othello = new OthelloGame(players, board, rules, scoreKeeper, undo);
+		when(scoreKeeper.getScoreObserver()).thenReturn(mock(Observer.class));
 
 		othello.start();
 
